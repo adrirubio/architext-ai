@@ -1,0 +1,36 @@
+# pyproject.toml
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "architect-ai"
+version = "0.1.0"
+authors = [
+  { name="Adrian Rubio-Punal", email="adrian.rubio.punal@gmail.com" },
+]
+description = "Refine your writing with a single prompt"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "openai>=1.0.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/adrirubio/architect-ai"
+"Bug Tracker" = "https://github.com/adrirubio/architect-ai/issues" # CHANGE THIS
+
+[project.scripts]
+architect-ai = "app:main"
+
+[tool.setuptools]
+# This tells setuptools to look at MANIFEST.in to find non-python files
+include-package-data = true
+# This lists the Python modules in the root directory
+py-modules = ["app", "ai_service", "config"]
