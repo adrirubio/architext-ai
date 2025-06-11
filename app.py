@@ -37,60 +37,65 @@ def on_enter_pressed(event):
             print("Welcome back!")
             greeting_text = f"{random.choice(greeting_words)}, {name}!"
 
-        # Update the AI frame's greeting
-        ai_greeting_label.config(text=greeting_text)
+        # Typing animation for AI frame's greeting
+        ai_greeting_label.config(text="")
+        fade_in_label(ai_greeting_label, greeting_text)
     else:
         print("Enter was pressed, but no input.")
+
+def fade_in_label(label, text, delay=40):
+    for i in range(len(text)):
+        window.after(i * delay, lambda i=i: label.config(text=text[:i+1]))
 
 # Window setup
 window = tk.Tk()
 window.geometry("600x400")
-window.configure(bg="grey21")
+window.configure(bg="#2c3e50")
 window.resizable(False, False)
 
 # Fonts
-cool_font = tkFont.Font(family="Helvetica", size=20, weight="bold", slant="italic")
-label_font = tkFont.Font(family="Helvetica", size=14)
+cool_font = tkFont.Font(family="Helvetica", size=18, weight="bold", slant="italic")
+label_font = tkFont.Font(family="Helvetica", size=15)
 
 # Welcome Frame
-welcome_frame = tk.Frame(window, bg="grey21")
+welcome_frame = tk.Frame(window, bg="#6e65c6")
 welcome_frame.pack(fill="both", expand=True)
 
 greeting_label = tk.Label(
     welcome_frame,
-    text="Hello!",
-    fg="white",
-    bg="grey21",
+    text="Hi! Just need a few quick details to get started!",
+    fg="black",
+    bg="#6e65c6",
     font=cool_font,
 )
 greeting_label.pack(pady=(30, 20))
 
-input_frame = tk.Frame(welcome_frame, bg="grey21")
+input_frame = tk.Frame(welcome_frame, bg="#6e65c6")
 input_frame.pack()
 
-separator = ttk.Separator(input_frame,orient= tk.HORIZONTAL)
-separator.pack(expand = True, fill = tk.X)
+separator = tk.Frame(input_frame, height=3, bg='black')
+separator.pack(fill=tk.X, pady=(5, 15))
 
 name_label = tk.Label(
     input_frame,
     text="Input name:",
-    bg="grey21",
-    fg="white",
+    bg="#6e65c6",
+    fg="black",
     font=label_font
 )
-name_label.pack()
+name_label.pack(pady=(5, 8))
 
-entry = tk.Entry(input_frame, font=label_font, width=20)
+entry = tk.Entry(input_frame, font=label_font, width=30)
 entry.pack()
 
 # AI Frame
-ai_frame = tk.Frame(window, bg="grey19")
+ai_frame = tk.Frame(window, bg="#6e65c6")
 
 ai_greeting_label = tk.Label(
     ai_frame,
     text="",
-    fg="white",
-    bg="grey19",
+    fg="black",
+    bg="#6e65c6",
     font=cool_font,
 )
 ai_greeting_label.pack(pady=(30, 20))
