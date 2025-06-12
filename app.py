@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.font as tkFont
 import tkinter.ttk as ttk
+from PIL import Image, ImageTk
 import random
 import os
 
@@ -58,44 +59,60 @@ cool_font = tkFont.Font(family="Helvetica", size=18, weight="bold", slant="itali
 label_font = tkFont.Font(family="Helvetica", size=15)
 
 # Welcome Frame
-welcome_frame = tk.Frame(window, bg="#6e65c6")
+welcome_frame = tk.Frame(window, bg="RoyalBlue4")
 welcome_frame.pack(fill="both", expand=True)
 
 greeting_label = tk.Label(
     welcome_frame,
-    text="Hi! Just need a few quick details to get started!",
+    text="Onboarding setup",
     fg="black",
-    bg="#6e65c6",
+    bg="RoyalBlue4",
     font=cool_font,
 )
-greeting_label.pack(pady=(30, 20))
+greeting_label.pack(pady=(30, 10))
 
-input_frame = tk.Frame(welcome_frame, bg="#6e65c6")
+input_frame = tk.Frame(welcome_frame, bg="RoyalBlue4")
 input_frame.pack()
 
 separator = tk.Frame(input_frame, height=3, bg='black')
-separator.pack(fill=tk.X, pady=(5, 15))
+separator.pack(fill=tk.X, pady=(5, 0))
 
 name_label = tk.Label(
     input_frame,
-    text="Input name:",
-    bg="#6e65c6",
+    text="What should we call you?",
+    bg="RoyalBlue4",
     fg="black",
     font=label_font
 )
-name_label.pack(pady=(5, 8))
+name_label.pack(pady=(40, 8))
 
-entry = tk.Entry(input_frame, font=label_font, width=30)
-entry.pack()
+entry = tk.Entry(input_frame, font=label_font, width=28)
+entry.pack(pady=0, expand=True)
+
+try:
+    pil_image = Image.open("architext-ai-logo.png")
+
+    target_height = 250
+    aspect_ratio = pil_image.width / pil_image.height
+    target_width = int(target_height * aspect_ratio)
+
+    pil_image = pil_image.resize((target_width, target_height), Image.Resampling.LANCZOS)
+    logo_image = ImageTk.PhotoImage(pil_image)
+
+    logo_label = tk.Label(welcome_frame, image=logo_image, bg="RoyalBlue4")
+    logo_label.pack(pady=20)
+
+except Exception as e:
+    print("Error loading image:", e)
 
 # AI Frame
-ai_frame = tk.Frame(window, bg="#6e65c6")
+ai_frame = tk.Frame(window, bg="RoyalBlue4")
 
 ai_greeting_label = tk.Label(
     ai_frame,
     text="",
     fg="black",
-    bg="#6e65c6",
+    bg="RoyalBlue4",
     font=cool_font,
 )
 ai_greeting_label.pack(pady=(30, 20))
