@@ -71,7 +71,7 @@ greeting_label = tk.Label(
 )
 greeting_label.pack(pady=(30, 20))
 
-separator = tk.Frame(welcome_frame, height=3, bg='black')
+separator = tk.Frame(welcome_frame, height=3, bg='white')
 separator.pack(fill=tk.X, padx=50, pady=(0, 20))
 
 # Add invisible spacer to push name label down
