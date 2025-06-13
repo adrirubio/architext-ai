@@ -65,34 +65,36 @@ welcome_frame.pack(fill="both", expand=True)
 greeting_label = tk.Label(
     welcome_frame,
     text="Onboarding setup",
-    fg="black",
+    fg="white",
     bg="RoyalBlue4",
     font=cool_font,
 )
-greeting_label.pack(pady=(30, 10))
+greeting_label.pack(pady=(30, 20))
 
-input_frame = tk.Frame(welcome_frame, bg="RoyalBlue4")
-input_frame.pack()
+separator = tk.Frame(welcome_frame, height=3, bg='black')
+separator.pack(fill=tk.X, padx=50, pady=(0, 20))
 
-separator = tk.Frame(input_frame, height=3, bg='black')
-separator.pack(fill=tk.X, pady=(5, 0))
+# Add invisible spacer to push name label down
+spacer = tk.Frame(welcome_frame, height=30, bg="RoyalBlue4")
+spacer.pack()
 
 name_label = tk.Label(
-    input_frame,
+    welcome_frame,
     text="What should we call you?",
     bg="RoyalBlue4",
-    fg="black",
+    fg="white",
     font=label_font
 )
-name_label.pack(pady=(40, 8))
+name_label.pack(pady=(0, 15))
 
-entry = tk.Entry(input_frame, font=label_font, width=28)
-entry.pack(pady=0, expand=True)
+entry = tk.Entry(welcome_frame, font=label_font, width=28)
+entry.pack(pady=(0, 0))
 
 try:
     pil_image = Image.open("architext-ai-logo.png")
 
-    target_height = 250
+    # Fixed size image placed right after the text
+    target_height = 275
     aspect_ratio = pil_image.width / pil_image.height
     target_width = int(target_height * aspect_ratio)
 
@@ -100,7 +102,7 @@ try:
     logo_image = ImageTk.PhotoImage(pil_image)
 
     logo_label = tk.Label(welcome_frame, image=logo_image, bg="RoyalBlue4")
-    logo_label.pack(pady=20)
+    logo_label.pack(pady=(0, 0))
 
 except Exception as e:
     print("Error loading image:", e)
@@ -111,7 +113,7 @@ ai_frame = tk.Frame(window, bg="RoyalBlue4")
 ai_greeting_label = tk.Label(
     ai_frame,
     text="",
-    fg="black",
+    fg="white",
     bg="RoyalBlue4",
     font=cool_font,
 )
