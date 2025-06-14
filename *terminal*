@@ -1,0 +1,71 @@
+░▒▓ ~/Documents/architext-ai  main !1 ?1 ▓▒░──────────────────────────────────────────────────░▒▓ 22:41:45 ▓▒░─╮
+❯ cd ..                                                                                                        ─╯
+
+░▒▓ ~/Documents ▓▒░────────────────────────────────────────────────────────────────────────────░▒▓ 22:42:10 ▓▒░─╮
+❯ ls                                                                                                           ─╯
+ls: unparsable value for LS_COLORS environment variable
+adrirubio.github.io  architext-ai                            demo-ai-pdf-reader.mp4  model-weights      VOCdevkit
+ai-learning          attention-is-all-you-need-Paper.pdf     Documents               node_modules
+ai-pdf-reader        coding-tips.org                         inference_results       package.json
+ai-pdf-reader-demo   deep-convolutional-neural-networks.pdf  ml-rover                package-lock.json
+ai-pdf-reader-video  demo-ai-pdf-reader.mlt                  model-podcasts          venv
+
+░▒▓ ~/Documents ▓▒░────────────────────────────────────────────────────────────────────────────░▒▓ 22:42:11 ▓▒░─╮
+❯ source Documents/bin/activate                                                                                ─╯
+
+░▒▓ ~/Documents ▓▒░─────────────────────────────────────────────────────────────░▒▓ Documents    22:42:13 ▓▒░─╮
+❯ cd Documents                                                                                                 ─╯
+
+░▒▓ ~/Documents/Documents ▓▒░───────────────────────────────────────────────────░▒▓ Documents    22:42:16 ▓▒░─╮
+❯ cd ..                                                                                                        ─╯
+
+░▒▓ ~/Documents ▓▒░─────────────────────────────────────────────────────────────░▒▓ Documents    22:42:31 ▓▒░─╮
+❯ cd architext-ai                                                                                              ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ?1 ▓▒░───────────────────────────────────░▒▓ Documents    22:42:33 ▓▒░─╮
+❯ ls                                                                                                           ─╯
+ls: unparsable value for LS_COLORS environment variable
+ai_service.py  architext-ai-logo.png  config.py                LICENSE      pyproject.toml  text.py
+app.py         config.ini             directory-structure.txt  MANIFEST.in  README.md
+
+░▒▓ ~/Documents/architext-ai  main !1 ?1 ▓▒░───────────────────────────────────░▒▓ Documents    22:42:34 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ?1 ▓▒░──────────────────────────────░▒▓ 6s  Documents    22:42:46 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░─────────────────────────────────░▒▓ 4s  Documents    22:44:17 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░─────────────────────────────────░▒▓ 6s  Documents    22:48:42 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░────────────────────────────────░▒▓ 15s  Documents    22:49:03 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░────────────────────────────────░▒▓ 30s  Documents    22:49:37 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+  File "/home/adrian/Documents/architext-ai/app.py", line 58
+    window.geometry(800x600")
+                      ^
+SyntaxError: invalid decimal literal
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░──────────────────────────────────────░▒▓ Documents    22:50:09 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░────────────────────────────────░▒▓ 22s  Documents    22:50:44 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░────────────────────────────────░▒▓ 11s  Documents    22:51:05 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░─────────────────────────────────░▒▓ 6s  Documents    22:52:00 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ▓▒░────────────────────────────────░▒▓ 60s  Documents    22:53:12 ▓▒░─╮
+❯ python3 app.py                                                                                               ─╯
+
+░▒▓ ~/Documents/architext-ai  main !1 ?1 ▓▒░─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────░▒▓ 7m 24s  Documents    23:00:49 ▓▒░─╮
+❯ exit                                                                                                                                                                                                                            ─╯
+
+Process terminal finished
