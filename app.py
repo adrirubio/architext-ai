@@ -16,8 +16,9 @@ greeting_words = [
     "You're just in time"
 ]
 
-def on_enter_pressed(event):
+def on_accept_pressed():
     name = name_entry.get().strip()
+    api = api_entry.get().strip()
     if name:
         print(f"Enter was pressed! User entered: {name}")
         welcome_frame.pack_forget()
@@ -35,6 +36,44 @@ def on_enter_pressed(event):
             f.write(name)
 
         if first_time:
+            print("This is your first time using the program!")
+            print(f"name= {name}")
+            print(f"api= {api}")
+            with open(flag_file, "w") as f:
+                f.write("User has run the program.")
+            greeting_text = f"Welcome to Architext-AI, {name}!"
+        else:
+            print("Welcome back!")
+            greeting_text = f"{random.choice(greeting_words)}, {name}!"
+
+        # Typing animation for AI frame's greeting
+        ai_greeting_label.config(text="")
+        fade_in_label(ai_greeting_label, greeting_text)
+    else:
+        print("Enter was pressed, but no input.")
+
+def on_enter_pressed(event):
+    name = name_entry.get().strip()
+    api = api_entry.get().strip()
+    if name:
+        print(f"Enter was pressed! User entered: {name}")
+        welcome_frame.pack_forget()
+        ai_frame.pack(fill="both", expand=True)
+
+        # First-run
+        data_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "architext-ai")
+        flag_file = os.path.join(data_dir, "user_has_run.flag")
+        name_file = os.path.join(data_dir, "user_name.txt")
+        os.makedirs(data_dir, exist_ok=True)
+        first_time = not os.path.exists(flag_file)
+
+        # Save name to file
+        with open(name_file, "w") as f:
+            f.write(name)
+
+        if first_time:
+            print(f"name= {name}")
+            print(f"api= {api}")
             print("This is your first time using the program!")
             with open(flag_file, "w") as f:
                 f.write("User has run the program.")
@@ -142,7 +181,8 @@ else:
         welcome_frame,
         text="Accept",
         bg="RoyalBlue4",
-        fg="white"
+        fg="white",
+        command=on_accept_pressed
     )
     button.pack(pady=30)
 
