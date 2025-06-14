@@ -26,8 +26,13 @@ def on_enter_pressed(event):
         # First-run
         data_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "architext-ai")
         flag_file = os.path.join(data_dir, "user_has_run.flag")
+        name_file = os.path.join(data_dir, "user_name.txt")
         os.makedirs(data_dir, exist_ok=True)
         first_time = not os.path.exists(flag_file)
+
+        # Save name to file
+        with open(name_file, "w") as f:
+            f.write(name)
 
         if first_time:
             print("This is your first time using the program!")
@@ -58,54 +63,12 @@ window.resizable(False, False)
 cool_font = tkFont.Font(family="Helvetica", size=18, weight="bold", slant="italic")
 label_font = tkFont.Font(family="Helvetica", size=15)
 
-# Welcome Frame
-welcome_frame = tk.Frame(window, bg="RoyalBlue4")
-welcome_frame.pack(fill="both", expand=True)
-
-greeting_label = tk.Label(
-    welcome_frame,
-    text="Onboarding setup",
-    fg="white",
-    bg="RoyalBlue4",
-    font=cool_font,
-)
-greeting_label.pack(pady=(30, 20))
-
-separator = tk.Frame(welcome_frame, height=3, bg='white')
-separator.pack(fill=tk.X, padx=50, pady=(0, 20))
-
-# Add invisible spacer to push name label down
-spacer = tk.Frame(welcome_frame, height=30, bg="RoyalBlue4")
-spacer.pack()
-
-name_label = tk.Label(
-    welcome_frame,
-    text="What should we call you?",
-    bg="RoyalBlue4",
-    fg="white",
-    font=label_font
-)
-name_label.pack(pady=(0, 15))
-
-entry = tk.Entry(welcome_frame, font=label_font, width=28)
-entry.pack(pady=(0, 0))
-
-try:
-    pil_image = Image.open("architext-ai-logo.png")
-
-    # Fixed size image placed right after the text
-    target_height = 275
-    aspect_ratio = pil_image.width / pil_image.height
-    target_width = int(target_height * aspect_ratio)
-
-    pil_image = pil_image.resize((target_width, target_height), Image.Resampling.LANCZOS)
-    logo_image = ImageTk.PhotoImage(pil_image)
-
-    logo_label = tk.Label(welcome_frame, image=logo_image, bg="RoyalBlue4")
-    logo_label.pack(pady=(0, 0))
-
-except Exception as e:
-    print("Error loading image:", e)
+# First-run
+data_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "architext-ai")
+flag_file = os.path.join(data_dir, "user_has_run.flag")
+name_file = os.path.join(data_dir, "user_name.txt")
+os.makedirs(data_dir, exist_ok=True)
+first_time = not os.path.exists(flag_file)
 
 # AI Frame
 ai_frame = tk.Frame(window, bg="RoyalBlue4")
@@ -119,6 +82,65 @@ ai_greeting_label = tk.Label(
 )
 ai_greeting_label.pack(pady=(30, 20))
 
-entry.bind("<Return>", on_enter_pressed)
+if not first_time and os.path.exists(name_file):
+    with open(name_file, "r") as f:
+        name = f.read().strip()
+    ai_frame.pack(fill="both", expand=True)
+    greeting_text = f"{random.choice(greeting_words)}, {name}!"
+    ai_greeting_label.config(text="")
+    fade_in_label(ai_greeting_label, greeting_text)
+else:
+    # Welcome Frame
+    welcome_frame = tk.Frame(window, bg="RoyalBlue4")
+    welcome_frame.pack(fill="both", expand=True)
+
+    greeting_label = tk.Label(
+        welcome_frame,
+        text="Onboarding setup",
+        fg="white",
+        bg="RoyalBlue4",
+        font=cool_font,
+    )
+    greeting_label.pack(pady=(30, 20))
+
+    separator = tk.Frame(welcome_frame, height=3, bg='white')
+    separator.pack(fill=tk.X, padx=50, pady=(0, 20))
+
+    # Add invisible spacer to push name label down
+    spacer = tk.Frame(welcome_frame, height=30, bg="RoyalBlue4")
+    spacer.pack()
+
+    name_label = tk.Label(
+        welcome_frame,
+        text="What should we call you?",
+        bg="RoyalBlue4",
+        fg="white",
+        font=label_font
+    )
+    name_label.pack(pady=(0, 15))
+
+    entry = tk.Entry(welcome_frame, font=label_font, width=28)
+    entry.pack(pady=(0, 0))
+
+    try:
+        pil_image = Image.open("architext-ai-logo.png")
+
+        # Fixed size image placed right after the text
+        target_height = 250
+        aspect_ratio = pil_image.width / pil_image.height
+        target_width = int(target_height * aspect_ratio)
+
+        pil_image = pil_image.resize((target_width, target_height), Image.Resampling.LANCZOS)
+        logo_image = ImageTk.PhotoImage(pil_image)
+
+        logo_label = tk.Label(welcome_frame, image=logo_image, bg="RoyalBlue4")
+        logo_label.pack(pady=(0, 0))
+
+    except Exception as e:
+        print("Error loading image:", e)
+
+    # Only bind if entry exists
+    entry.bind("<Return>", on_enter_pressed)
 
 window.mainloop()
+
