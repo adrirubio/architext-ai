@@ -28,12 +28,18 @@ def on_accept_pressed():
         data_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "architext-ai")
         flag_file = os.path.join(data_dir, "user_has_run.flag")
         name_file = os.path.join(data_dir, "user_name.txt")
+        api_file = os.path.join(data_dir, "user_api.txt")
+
         os.makedirs(data_dir, exist_ok=True)
         first_time = not os.path.exists(flag_file)
 
         # Save name to file
         with open(name_file, "w") as f:
             f.write(name)
+
+        # Save api to file
+        with open(api_file, "w") as f:
+            f.write(api)
 
         if first_time:
             print("This is your first time using the program!")
@@ -64,12 +70,18 @@ def on_enter_pressed(event):
         data_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "architext-ai")
         flag_file = os.path.join(data_dir, "user_has_run.flag")
         name_file = os.path.join(data_dir, "user_name.txt")
+        api_file = os.path.join(data_dir, "user_api.txt")
+
         os.makedirs(data_dir, exist_ok=True)
         first_time = not os.path.exists(flag_file)
 
         # Save name to file
         with open(name_file, "w") as f:
             f.write(name)
+
+        # Save api to file
+        with open(api_file, "w") as f:
+            f.write(api)
 
         if first_time:
             print(f"name= {name}")
@@ -119,9 +131,48 @@ ai_greeting_label = tk.Label(
     text="",
     fg="white",
     bg="RoyalBlue4",
-    font=cool_font,
+    font=cool_font
 )
 ai_greeting_label.pack(pady=(30, 5))
+
+# Input box for message design
+message_label = tk.Label(
+    ai_frame,
+    text="Design your message here:",
+    fg="white",
+    bg="RoyalBlue4",
+    font=label_font
+)
+message_label.pack(anchor="w", padx=40)
+
+msg_frame = tk.Frame(ai_frame, bg="RoyalBlue4")
+msg_frame.pack(anchor="w", padx=40, pady=(5, 0))
+
+scrollbar = tk.Scrollbar(msg_frame, orient="vertical")
+scrollbar.pack(side="right", fill="y")
+
+message = tk.Text(
+    msg_frame,
+    height=5, width=40,
+    wrap="word",
+    yscrollcommand=scrollbar.set
+)
+message.pack(side="left")
+
+scrollbar.config(command=message.yview)
+
+# Input box for prompt
+prompt_label = tk.Label(
+    ai_frame,
+    text="How would you like your improved message?",
+    fg="white",
+    bg="RoyalBlue4",
+    font=label_font
+)
+prompt_label.pack(anchor="w", padx=40, pady=(10, 0))
+
+prompt_entry = tk.Entry(ai_frame, font=label_font, width=37)
+prompt_entry.pack(anchor="w", padx=40, pady=(5, 0))
 
 if not first_time and os.path.exists(name_file):
     with open(name_file, "r") as f:
@@ -206,4 +257,3 @@ else:
     api_entry.bind("<Return>", on_enter_pressed)
 
 window.mainloop()
-
