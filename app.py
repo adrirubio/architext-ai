@@ -174,6 +174,15 @@ prompt_label.pack(anchor="w", padx=40, pady=(10, 0))
 prompt_entry = tk.Entry(ai_frame, font=label_font, width=37)
 prompt_entry.pack(anchor="w", padx=40, pady=(5, 0))
 
+# Send button
+button = tk.Button(
+    ai_frame,
+    text="Send",
+    bg="RoyalBlue4",
+    fg="white"
+)
+button.pack(anchor="e", padx=100, pady=(10, 0))
+
 if not first_time and os.path.exists(name_file):
     with open(name_file, "r") as f:
         name = f.read().strip()
