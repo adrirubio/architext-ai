@@ -115,6 +115,17 @@ def on_copy():
         window.clipboard_append(text)
         window.update()
 
+def on_clear():
+    # Remove text in message widget
+    message.delete("1.0", "end")
+    # Remove text in prompt widget
+    prompt_entry.delete(0, "end")
+    # Remove text in response widget
+    response.config(state="normal")
+    response.delete("1.0", "end")
+    response.insert("end", "Craft your message, set your guidelines, and let watch as the AI unveils a polished, upgraded version!\n")
+    response.config(state="disabled")
+
 def fade_in_label(label, text, delay=40):
     for i in range(len(text)):
         window.after(i * delay, lambda i=i: label.config(text=text[:i+1]))
@@ -251,7 +262,13 @@ response = tk.Text(
     wrap="word"
 )
 response.pack(side="left", fill="both", expand=True)
+response.insert("end", "Craft your message, set your guidelines, and let watch as the AI unveils a polished, upgraded version!\n")
 response.config(state="disabled")
+
+# Scrollbar
+response_scrollbar = tk.Scrollbar(response_frame, orient="vertical", command=response.yview)
+response_scrollbar.pack(side="right", fill="y")
+response.configure(yscrollcommand=response_scrollbar.set)
 
 # Copy button
 copy_btn = tk.Button(
@@ -267,10 +284,19 @@ copy_btn = tk.Button(
 )
 copy_btn.grid(row=4, column=1, sticky="e", padx=15)
 
-# Scrollbar
-response_scrollbar = tk.Scrollbar(response_frame, orient="vertical", command=response.yview)
-response_scrollbar.pack(side="right", fill="y")
-response.configure(yscrollcommand=response_scrollbar.set)
+# Clear button
+clear_btn = tk.Button(
+    ai_frame,
+    text="Clear",
+    bg="white",
+    fg="grey19",
+    activebackground="blue",
+    activeforeground="white",
+    width=10,
+    anchor="center",
+    command=on_clear
+)
+clear_btn.grid(row=4, column=0, sticky="w", padx=15)
 
 if not first_time and os.path.exists(name_file):
     with open(name_file, "r") as f:
