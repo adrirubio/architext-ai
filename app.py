@@ -100,6 +100,15 @@ def on_enter_pressed(event):
     else:
         print("Enter was pressed, but no input.")
 
+
+def on_send():
+    # Message
+    text = message.get("1.0", "end-1c")
+    print(f"Message for improvement:\n{text}")
+    # Prompt guideline
+    text = prompt_entry.get()
+    print(f"\nGuideline:\n{text}")
+
 def fade_in_label(label, text, delay=40):
     for i in range(len(text)):
         window.after(i * delay, lambda i=i: label.config(text=text[:i+1]))
@@ -109,6 +118,7 @@ window = tk.Tk()
 window.geometry("700x500")
 window.configure(bg="#2c3e50")
 window.resizable(False, False)
+window.tk.call("ttk::setTheme", "classic")
 
 # Fonts
 cool_font = tkFont.Font(family="Helvetica", size=18, weight="bold", slant="italic")
@@ -122,8 +132,11 @@ os.makedirs(data_dir, exist_ok=True)
 first_time = not os.path.exists(flag_file)
 
 # AI Frame
-ai_frame = tk.Frame(window, bg="RoyalBlue4",
-                    width=700, height=500)
+ai_frame = tk.Frame(
+    window,
+    bg="RoyalBlue4",
+    width=700, height=500
+)
 ai_frame.pack_propagate(False)
 
 ai_greeting_label = tk.Label(
@@ -133,7 +146,11 @@ ai_greeting_label = tk.Label(
     bg="RoyalBlue4",
     font=cool_font
 )
-ai_greeting_label.pack(pady=(30, 5))
+ai_greeting_label.grid(row=0, column=0, columnspan=2, pady=(25, 15))
+
+# Grid
+ai_frame.grid_columnconfigure(0, weight=1)   # left  column
+ai_frame.grid_columnconfigure(1, weight=1)   # right column
 
 # Input box for message design
 message_label = tk.Label(
@@ -143,23 +160,27 @@ message_label = tk.Label(
     bg="RoyalBlue4",
     font=label_font
 )
-message_label.pack(anchor="w", padx=40)
+message_label.grid(row=1, column=0, padx=40, pady=(0, 5))
 
-msg_frame = tk.Frame(ai_frame, bg="RoyalBlue4")
-msg_frame.pack(anchor="w", padx=40, pady=(5, 0))
+# Create frame for message text and scrollbar
+message_frame = tk.Frame(ai_frame)
+message_frame.grid(row=2, column=0, padx=40)
 
-scrollbar = tk.Scrollbar(msg_frame, orient="vertical")
-scrollbar.pack(side="right", fill="y")
+# Configure the frame
+message_frame.grid_rowconfigure(0, weight=1)
+message_frame.grid_columnconfigure(0, weight=1)
 
 message = tk.Text(
-    msg_frame,
+    message_frame,
     height=5, width=40,
-    wrap="word",
-    yscrollcommand=scrollbar.set
+    wrap="word"
 )
-message.pack(side="left")
+message.grid(row=0, column=0, sticky="nsew")
 
-scrollbar.config(command=message.yview)
+# Scrollbar
+message_scrollbar = tk.Scrollbar(message_frame, orient="vertical", command=message.yview)
+message_scrollbar.grid(row=0, column=1, sticky="ns")
+message.config(yscrollcommand=message_scrollbar.set)
 
 # Input box for prompt
 prompt_label = tk.Label(
@@ -167,21 +188,28 @@ prompt_label = tk.Label(
     text="How would you like your improved message?",
     fg="white",
     bg="RoyalBlue4",
-    font=label_font
+    font=label_font,
+    wraplength=310,
+    justify="center"
 )
-prompt_label.pack(anchor="w", padx=40, pady=(10, 0))
+prompt_label.grid(row=1, column=1, padx=40, pady=(0, 5))
 
 prompt_entry = tk.Entry(ai_frame, font=label_font, width=37)
-prompt_entry.pack(anchor="w", padx=40, pady=(5, 0))
+prompt_entry.grid(row=2, column=1, padx=40, pady=40, sticky="new")
 
 # Send button
-button = tk.Button(
+send_btn = tk.Button(
     ai_frame,
     text="Send",
-    bg="RoyalBlue4",
-    fg="white"
+    bg="white",
+    fg="RoyalBlue4",
+    activebackground="blue",
+    activeforeground="white",
+    width=15,
+    anchor="center",
+    command=on_send
 )
-button.pack(anchor="e", padx=100, pady=(10, 0))
+send_btn.grid(row=3, column=0, columnspan=2, pady=(15, 0))
 
 if not first_time and os.path.exists(name_file):
     with open(name_file, "r") as f:
