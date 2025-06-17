@@ -100,7 +100,6 @@ def on_enter_pressed(event):
     else:
         print("Enter was pressed, but no input.")
 
-
 def on_send():
     # Message
     text = message.get("1.0", "end-1c")
@@ -108,6 +107,13 @@ def on_send():
     # Prompt guideline
     text = prompt_entry.get()
     print(f"\nGuideline:\n{text}")
+
+def on_copy():
+    text = response.get("1.0", "end-1c")
+    if text:
+        window.clipboard_clear()
+        window.clipboard_append(text)
+        window.update()
 
 def fade_in_label(label, text, delay=40):
     for i in range(len(text)):
@@ -172,7 +178,7 @@ message_frame.grid_columnconfigure(0, weight=1)
 
 message = tk.Text(
     message_frame,
-    height=5, width=40,
+    height=7, width=50,
     wrap="word"
 )
 message.grid(row=0, column=0, sticky="nsew")
@@ -189,13 +195,17 @@ prompt_label = tk.Label(
     fg="white",
     bg="RoyalBlue4",
     font=label_font,
-    wraplength=310,
+    wraplength=220,
     justify="center"
 )
 prompt_label.grid(row=1, column=1, padx=40, pady=(0, 5))
 
-prompt_entry = tk.Entry(ai_frame, font=label_font, width=37)
-prompt_entry.grid(row=2, column=1, padx=40, pady=40, sticky="new")
+prompt_entry = tk.Entry(
+    ai_frame,
+    font=label_font,
+    width=42
+)
+prompt_entry.grid(row=2, column=1, padx=40, pady=43, sticky="new")
 
 # Send button
 send_btn = tk.Button(
@@ -209,7 +219,58 @@ send_btn = tk.Button(
     anchor="center",
     command=on_send
 )
-send_btn.grid(row=3, column=0, columnspan=2, pady=(15, 0))
+send_btn.grid(row=3, column=0, columnspan=2, pady=(30, 12))
+
+# Add different colour span row
+row4_bg = tk.Frame(ai_frame, bg="grey19")
+row4_bg.grid(row=4, column=0, columnspan=2, sticky="nsew")
+
+# Response label
+response_label = tk.Label(
+    ai_frame,
+    text="Improved message:",
+    fg="white",
+    bg="grey19",
+    font=label_font
+)
+response_label.grid(row=4, column=0, columnspan=2, sticky="n", pady=20)
+
+# Create frame for message text and scrollbar
+response_frame = tk.Frame(ai_frame)
+response_frame.grid(row=4, column=0, columnspan=2, pady=50)
+
+# Configure the frame
+response_frame.grid_rowconfigure(4,  weight=1)
+response_frame.grid_columnconfigure(0, weight=1)
+
+# Response text box
+response = tk.Text(
+    response_frame,
+    height=6,
+    width=50,
+    wrap="word"
+)
+response.pack(side="left", fill="both", expand=True)
+response.config(state="disabled")
+
+# Copy button
+copy_btn = tk.Button(
+    ai_frame,
+    text="Copy",
+    bg="white",
+    fg="grey19",
+    activebackground="blue",
+    activeforeground="white",
+    width=10,
+    anchor="center",
+    command=on_copy
+)
+copy_btn.grid(row=4, column=1, sticky="e", padx=15)
+
+# Scrollbar
+response_scrollbar = tk.Scrollbar(response_frame, orient="vertical", command=response.yview)
+response_scrollbar.pack(side="right", fill="y")
+response.configure(yscrollcommand=response_scrollbar.set)
 
 if not first_time and os.path.exists(name_file):
     with open(name_file, "r") as f:
