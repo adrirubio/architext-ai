@@ -44,49 +44,6 @@ def on_accept_pressed():
         if first_time:
             print("This is your first time using the program!")
             print(f"name= {name}")
-            print(f"api= {api}")
-            with open(flag_file, "w") as f:
-                f.write("User has run the program.")
-            greeting_text = f"Welcome to Architext-AI, {name}!"
-        else:
-            print("Welcome back!")
-            greeting_text = f"{random.choice(greeting_words)}, {name}!"
-
-        # Typing animation for AI frame's greeting
-        ai_greeting_label.config(text="")
-        fade_in_label(ai_greeting_label, greeting_text)
-    else:
-        print("Enter was pressed, but no input.")
-
-def on_enter_pressed(event):
-    name = name_entry.get().strip()
-    api = api_entry.get().strip()
-    if name:
-        print(f"Enter was pressed! User entered: {name}")
-        welcome_frame.pack_forget()
-        ai_frame.pack(fill="both", expand=True)
-
-        # First-run
-        data_dir = os.path.join(os.path.expanduser("~"), ".local", "share", "architext-ai")
-        flag_file = os.path.join(data_dir, "user_has_run.flag")
-        name_file = os.path.join(data_dir, "user_name.txt")
-        api_file = os.path.join(data_dir, "user_api.txt")
-
-        os.makedirs(data_dir, exist_ok=True)
-        first_time = not os.path.exists(flag_file)
-
-        # Save name to file
-        with open(name_file, "w") as f:
-            f.write(name)
-
-        # Save api to file
-        with open(api_file, "w") as f:
-            f.write(api)
-
-        if first_time:
-            print(f"name= {name}")
-            print(f"api= {api}")
-            print("This is your first time using the program!")
             with open(flag_file, "w") as f:
                 f.write("User has run the program.")
             greeting_text = f"Welcome to Architext-AI, {name}!"
@@ -105,7 +62,7 @@ def on_send():
     text = message.get("1.0", "end-1c")
     print(f"Message for improvement:\n{text}")
     # Prompt guideline
-    text = prompt_entry.get()
+    text = prompt.get("1.0", "end-1c")
     print(f"\nGuideline:\n{text}")
 
 def on_copy():
@@ -119,16 +76,25 @@ def on_clear():
     # Remove text in message widget
     message.delete("1.0", "end")
     # Remove text in prompt widget
-    prompt_entry.delete(0, "end")
+    prompt.delete("1.0", "end")
     # Remove text in response widget
     response.config(state="normal")
     response.delete("1.0", "end")
-    response.insert("end", "Craft your message, set your guidelines, and let watch as the AI unveils a polished, upgraded version!\n")
-    response.config(state="disabled")
+    text = "Craft your message, set your guidelines, and let watch as the AI unveils a polished, upgraded version!\n"
+    fade_in_text(response, text)
 
 def fade_in_label(label, text, delay=40):
     for i in range(len(text)):
         window.after(i * delay, lambda i=i: label.config(text=text[:i+1]))
+
+def fade_in_text(text_widget, text, delay=40):
+    def insert_char(index):
+        if index < len(text):
+            text_widget.insert("end", text[index])
+            text_widget.after(delay, lambda: insert_char(index + 1))
+        else:
+            text_widget.config(state="disabled")
+    insert_char(0)
 
 # Window setup
 window = tk.Tk()
@@ -211,12 +177,25 @@ prompt_label = tk.Label(
 )
 prompt_label.grid(row=1, column=1, padx=40, pady=(0, 5))
 
-prompt_entry = tk.Entry(
-    ai_frame,
-    font=label_font,
-    width=42
+# Create frame for prompt text and scrollbar
+prompt_frame = tk.Frame(ai_frame)
+prompt_frame.grid(row=2, column=1, padx=40)
+
+# Configure the frame
+prompt_frame.grid_rowconfigure(0, weight=1)
+prompt_frame.grid_columnconfigure(0, weight=1)
+
+prompt = tk.Text(
+    prompt_frame,
+    height=7, width=50,
+    wrap="word"
 )
-prompt_entry.grid(row=2, column=1, padx=40, pady=43, sticky="new")
+prompt.grid(row=0, column=0, sticky="nsew")
+
+# Scrollbar
+prompt_scrollbar = tk.Scrollbar(prompt_frame, orient="vertical", command=prompt.yview)
+prompt_scrollbar.grid(row=0, column=1, sticky="ns")
+prompt.config(yscrollcommand=prompt_scrollbar.set)
 
 # Send button
 send_btn = tk.Button(
@@ -262,8 +241,8 @@ response = tk.Text(
     wrap="word"
 )
 response.pack(side="left", fill="both", expand=True)
-response.insert("end", "Craft your message, set your guidelines, and let watch as the AI unveils a polished, upgraded version!\n")
-response.config(state="disabled")
+text = "Craft your message, set your guidelines, and let watch as the AI unveils a polished, upgraded version!\n"
+fade_in_text(response, text)
 
 # Scrollbar
 response_scrollbar = tk.Scrollbar(response_frame, orient="vertical", command=response.yview)
@@ -378,6 +357,6 @@ else:
         print("Error loading image:", e)
 
     # Only bind if entry exists
-    api_entry.bind("<Return>", on_enter_pressed)
+    api_entry.bind("<Return>", lambda event: on_accept_pressed())
 
 window.mainloop()
