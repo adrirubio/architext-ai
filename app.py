@@ -4,6 +4,8 @@ import tkinter.ttk as ttk
 from PIL import Image, ImageTk
 import random
 import os
+import threading
+import openai
 
 # Random greeting
 greeting_words = [
@@ -19,6 +21,7 @@ greeting_words = [
 def on_accept_pressed():
     name = name_entry.get().strip()
     api = api_entry.get().strip()
+    openai.api_key = api
     if name:
         print(f"Enter was pressed! User entered: {name}")
         welcome_frame.pack_forget()
@@ -58,12 +61,47 @@ def on_accept_pressed():
         print("Enter was pressed, but no input.")
 
 def on_send():
-    # Message
-    text = message.get("1.0", "end-1c")
-    print(f"Message for improvement:\n{text}")
-    # Prompt guideline
-    text = prompt.get("1.0", "end-1c")
-    print(f"\nGuideline:\n{text}")
+    user_text = message.get("1.0", "end-1c").strip()
+    guideline = prompt.get("1.0", "end-1c").strip()
+    if not user_text:
+        return
+
+    # Placeholder with typing animation
+    response.config(state="normal")
+    response.delete("1.0", "end")
+    fade_in_text(response, "⏳  Thinking…\n")
+
+    # background worker
+    def call_openai():
+        try:
+            stream = openai.ChatCompletion.create(
+                model="gpt-4o",
+                stream=True,
+                temperature=0.7,
+                messages=[
+                    {"role": "system",
+                     "content": ("You are an expert copy-editor. "
+                                 "Rewrite the user's text so it reads naturally, "
+                                 "is audience-appropriate, and follows the given guidelines."
+                                 "Don't respond with anything else, just the improved message."
+                                 "If you don't see a valid message or guidelines say: Not valid")},
+                    {"role": "user",
+                     "content": (f"ORIGINAL TEXT:\n{user_text}\n\n"
+                                 f"GUIDELINES:\n{guideline or 'No special instructions.'}")},
+                ],
+            )
+
+            # type-out effect, char-by-char
+            for chunk in stream:
+                delta = chunk.choices[0].delta
+                if "content" in delta:
+                    for ch in delta.content:
+                        window.after(0, lambda c=ch: response.insert("end", c))
+
+            window.after(0, lambda: response.config(state="disabled"))
+
+        except Exception as e:
+            window.after(0, lambda: display_result(f"Error: {e}"))
 
 def on_copy():
     text = response.get("1.0", "end-1c")
@@ -95,6 +133,13 @@ def fade_in_text(text_widget, text, delay=40):
         else:
             text_widget.config(state="disabled")
     insert_char(0)
+
+# Prepare and push text into response box
+def display_result(text):
+    response.config(state="normal")
+    response.delete("1.0", "end")
+    response.insert("end", text)
+    response.see("end")
 
 # Window setup
 window = tk.Tk()
