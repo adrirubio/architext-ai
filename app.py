@@ -5,7 +5,10 @@ from PIL import Image, ImageTk
 import random
 import os
 import threading
-import openai
+from openai import OpenAI
+
+# Global client variable
+client = None
 
 # Random greeting
 greeting_words = [
@@ -19,9 +22,10 @@ greeting_words = [
 ]
 
 def on_accept_pressed():
+    global client
     name = name_entry.get().strip()
     api = api_entry.get().strip()
-    openai.api_key = api
+    client = OpenAI(api_key=api)
     if name:
         print(f"Enter was pressed! User entered: {name}")
         welcome_frame.pack_forget()
@@ -61,20 +65,25 @@ def on_accept_pressed():
         print("Enter was pressed, but no input.")
 
 def on_send():
+    global client
     user_text = message.get("1.0", "end-1c").strip()
     guideline = prompt.get("1.0", "end-1c").strip()
     if not user_text:
         return
 
-    # Placeholder with typing animation
+    # Typing animation
     response.config(state="normal")
     response.delete("1.0", "end")
-    fade_in_text(response, "⏳  Thinking…\n")
+    fade_in_text(response, "Thinking…\n", disable_after=False)
 
     # background worker
     def call_openai():
         try:
-            stream = openai.ChatCompletion.create(
+            # Clear the thinking message and re-enable the widget
+            window.after(500, lambda: response.config(state="normal"))
+            window.after(500, lambda: response.delete("1.0", "end"))
+
+            stream = client.chat.completions.create(
                 model="gpt-4o",
                 stream=True,
                 temperature=0.7,
@@ -93,15 +102,18 @@ def on_send():
 
             # type-out effect, char-by-char
             for chunk in stream:
-                delta = chunk.choices[0].delta
-                if "content" in delta:
-                    for ch in delta.content:
+                if chunk.choices[0].delta.content:
+                    content = chunk.choices[0].delta.content
+                    for ch in content:
                         window.after(0, lambda c=ch: response.insert("end", c))
 
             window.after(0, lambda: response.config(state="disabled"))
 
         except Exception as e:
             window.after(0, lambda: display_result(f"Error: {e}"))
+
+    # start worker
+    threading.Thread(target=call_openai, daemon=True).start()
 
 def on_copy():
     text = response.get("1.0", "end-1c")
@@ -125,13 +137,14 @@ def fade_in_label(label, text, delay=40):
     for i in range(len(text)):
         window.after(i * delay, lambda i=i: label.config(text=text[:i+1]))
 
-def fade_in_text(text_widget, text, delay=40):
+def fade_in_text(text_widget, text, delay=40, disable_after=True):
     def insert_char(index):
         if index < len(text):
             text_widget.insert("end", text[index])
             text_widget.after(delay, lambda: insert_char(index + 1))
         else:
-            text_widget.config(state="disabled")
+            if disable_after:
+                text_widget.config(state="disabled")
     insert_char(0)
 
 # Prepare and push text into response box
@@ -286,7 +299,7 @@ response = tk.Text(
     wrap="word"
 )
 response.pack(side="left", fill="both", expand=True)
-text = "Craft your message, set your guidelines, and let watch as the AI unveils a polished, upgraded version!\n"
+text = "Craft your message, set your guidelines, and watch as the AI unveils a polished, upgraded version!\n"
 fade_in_text(response, text)
 
 # Scrollbar
@@ -325,6 +338,14 @@ clear_btn.grid(row=4, column=0, sticky="w", padx=15)
 if not first_time and os.path.exists(name_file):
     with open(name_file, "r") as f:
         name = f.read().strip()
+
+    # Load API key if it exists
+    api_file = os.path.join(data_dir, "user_api.txt")
+    if os.path.exists(api_file):
+        with open(api_file, "r") as f:
+            api_key = f.read().strip()
+            client = OpenAI(api_key=api_key)
+
     ai_frame.pack(fill="both", expand=True)
     greeting_text = f"{random.choice(greeting_words)}, {name}!"
     ai_greeting_label.config(text="")
