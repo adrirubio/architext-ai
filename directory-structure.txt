@@ -4,11 +4,7 @@ architect-ai/
 ├── README.md
 ├── requirements.txt
 ├── pyproject.toml      # updated for the new name and flat structure
-├── MANIFEST.in         # to ensure assets are included in the package
 │
-├── app.py              # main app file (must have a main() function)
-├── ai_service.py       # handles AI service calls
-├── config.py           # manages configuration (API key)
-│
-└── assets/
-    └── icon.ico        # application icon
+├── app.py              # main app file
+├── architext-ai-logo.png        # application icon
+└── architext-ai-logo-small.png        # updated application icon

@@ -19,18 +19,13 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "openai>=1.0.0"
+    "openai>=1.0.0",
+    "Pillow>=8.0.0"
 ]
 
 [project.urls]
 "Homepage" = "https://github.com/adrirubio/architect-ai"
-"Bug Tracker" = "https://github.com/adrirubio/architect-ai/issues" # CHANGE THIS
-
-[project.scripts]
-architect-ai = "app:main"
 
 [tool.setuptools]
-# This tells setuptools to look at MANIFEST.in to find non-python files
-include-package-data = true
 # This lists the Python modules in the root directory
-py-modules = ["app", "ai_service", "config"]
+py-modules = ["app"]
