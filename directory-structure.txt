@@ -2,7 +2,6 @@ architect-ai/
 │
 ├── .gitignore
 ├── README.md
-├── requirements.txt
 ├── pyproject.toml      # updated for the new name and flat structure
 │
 ├── app.py              # main app file
