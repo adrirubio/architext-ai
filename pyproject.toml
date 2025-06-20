@@ -6,7 +6,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "architect-ai"
-version = "0.1.0"
 authors = [
   { name="Adrian Rubio-Punal", email="adrian.rubio.punal@gmail.com" },
 ]
