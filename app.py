@@ -273,6 +273,13 @@ send_btn.grid(row=3, column=0, columnspan=2, pady=(30, 12))
 row4_bg = tk.Frame(ai_frame, bg="grey19")
 row4_bg.grid(row=4, column=0, columnspan=2, sticky="nsew")
 
+# Add different colour span row
+row5_and_below = tk.Frame(ai_frame, bg="SteelBlue2")
+row5_and_below.grid(row=5, column=0, columnspan=2, sticky="nsew")
+
+# Let row 5 absorb remaining space
+ai_frame.grid_rowconfigure(5, weight=1)
+
 # Response label
 response_label = tk.Label(
     ai_frame,
