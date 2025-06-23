@@ -13,7 +13,7 @@ Architect AI is your blueprint for perfect writing. It's a minimalist desktop ap
 Watch a quick preview below (GIF)
 
 ### 🔹 Preview (GIF)
-![Architext AI - Preview](https://github.com/adrirubio/architext-ai/raw/main/demo-architext-ai.gif)
+![Architext AI - Preview](https://github.com/adrirubio/demo-files/raw/main/demo-architext-ai.gif)
 
 ## Installation
 
