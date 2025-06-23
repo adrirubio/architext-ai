@@ -34,13 +34,6 @@ Watch a quick preview below (GIF)
    pip install openai>=1.0.0 Pillow>=8.0.0 pynput
    ```
 
-3. **Set up your OpenAI API key**
-
-   Create a `config.py` file in the project directory:
-   ```python
-   OPENAI_API_KEY = "your-api-key-here"
-   ```
-
 4. **Run the application**
    ```bash
    python app.py
