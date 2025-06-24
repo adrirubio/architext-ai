@@ -21,7 +21,7 @@ def launch_app():
 
     try:
         app_path = os.path.join(os.path.dirname(__file__), "app.py")
-        
+
         subprocess.Popen([sys.executable, app_path],
                         cwd=os.path.dirname(__file__))
         last_launch_time = current_time

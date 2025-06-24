@@ -27,6 +27,7 @@ Install directly from GitHub using pipx for an isolated environment:
 
 ```bash
 pipx install git+https://github.com/adrirubio/architext-ai.git
+pipx ensurepath
 ```
 
 After installation, you can run:
