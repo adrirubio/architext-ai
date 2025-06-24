@@ -21,9 +21,8 @@ def launch_app():
 
     try:
         app_path = os.path.join(os.path.dirname(__file__), "app.py")
-        venv_python = "/home/adrian/Documents/venv/bin/python"
-
-        subprocess.Popen([venv_python, app_path],
+        
+        subprocess.Popen([sys.executable, app_path],
                         cwd=os.path.dirname(__file__))
         last_launch_time = current_time
         print("Architext AI launched!")

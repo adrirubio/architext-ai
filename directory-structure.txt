@@ -1,9 +1,16 @@
-architect-ai/
+architext-ai/
 │
 ├── .gitignore
+├── LICENSE
 ├── README.md
-├── pyproject.toml      # updated for the new name and flat structure
+├── requirements.txt
+├── pyproject.toml
+├── MANIFEST.in
 │
-├── app.py              # main app file
-├── architext-ai-logo.png        # application icon
-└── architext-ai-logo-small.png        # updated application icon
+├── architext_ai/
+│   ├── __init__.py
+│   ├── app.py              # main application
+│   └── hotkey_daemon.py    # F5 hotkey daemon
+│
+├── architext-ai-logo.png
+└── architext-ai-logo-small.png

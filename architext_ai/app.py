@@ -414,7 +414,8 @@ else:
     button.pack(pady=30)
 
     try:
-        pil_image = Image.open("architext-ai-logo-small.png")
+        logo_path = os.path.join(os.path.dirname(__file__), "..", "architext-ai-logo-small.png")
+        pil_image = Image.open(logo_path)
 
         target_height = 140
         aspect_ratio = pil_image.width / pil_image.height
@@ -432,4 +433,8 @@ else:
     # Only bind if entry exists
     api_entry.bind("<Return>", lambda event: on_accept_pressed())
 
-window.mainloop()
+def main():
+    window.mainloop()
+
+if __name__ == "__main__":
+    main()

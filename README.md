@@ -21,7 +21,19 @@ Watch a quick preview below (GIF)
 - Python 3.8 or higher
 - An OpenAI API key
 
-### Quick Start
+### Install with pipx (Recommended)
+
+Install directly from GitHub using pipx for an isolated environment:
+
+```bash
+pipx install git+https://github.com/adrirubio/architext-ai.git
+```
+
+After installation, you can run:
+- `architext` - Launch the main application
+- `architext-hotkey` - Start the F5 hotkey daemon
+
+### Manual Installation
 
 1. **Clone the repository**
    ```bash
@@ -31,12 +43,12 @@ Watch a quick preview below (GIF)
 
 2. **Install dependencies**
    ```bash
-   pip install openai>=1.0.0 Pillow>=8.0.0 pynput
+   pip install -r requirements.txt
    ```
 
-4. **Run the application**
+3. **Run the application**
    ```bash
-   python app.py
+   python architext_ai/app.py
    ```
 
 ### Optional: Global Hotkey Setup (F5)
@@ -45,7 +57,11 @@ To launch Architext AI with the F5 key from anywhere on your system:
 
 1. **Start the hotkey daemon**
    ```bash
-   python hotkey_daemon.py
+   # If installed with pipx:
+   architext-hotkey
+   
+   # If running manually:
+   python architext_ai/hotkey_daemon.py
    ```
 
 2. **Keep it running in the background**
@@ -69,9 +85,10 @@ To launch Architext AI with the F5 key from anywhere on your system:
 
    [Service]
    Type=simple
-   ExecStart=/usr/bin/python3 /path/to/architext-ai/hotkey_daemon.py
+   ExecStart=/home/YOUR_USERNAME/.local/bin/architext-hotkey
    Restart=on-failure
    User=YOUR_USERNAME
+   Environment="PATH=/home/YOUR_USERNAME/.local/bin:/usr/bin"
 
    [Install]
    WantedBy=default.target
@@ -85,8 +102,9 @@ To launch Architext AI with the F5 key from anywhere on your system:
 
 ## Usage
 
-1. **Launch the app** using either:
-   - Direct command: `python app.py`
+1. **Launch the app** using one of these methods:
+   - Command: `architext` (if installed with pipx)
+   - Direct: `python architext_ai/app.py` (if cloned manually)
    - F5 hotkey (if daemon is running)
 
 2. **Enter your prompt** in the text field
@@ -94,4 +112,11 @@ To launch Architext AI with the F5 key from anywhere on your system:
 3. **Select and paste text** you want to enhance
 
 4. **Get instant results** with AI-powered text refinement
+
+## Uninstalling
+
+If installed with pipx:
+```bash
+pipx uninstall architext-ai
+```
 
